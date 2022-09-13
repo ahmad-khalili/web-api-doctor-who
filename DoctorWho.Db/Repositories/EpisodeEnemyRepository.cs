@@ -5,9 +5,9 @@ public class EpisodeEnemyRepository
 {
     private readonly DoctorWhoCoreDbContext _context;
 
-    public EpisodeEnemyRepository()
+    public EpisodeEnemyRepository(DoctorWhoCoreDbContext context)
     {
-        _context = new DoctorWhoCoreDbContext();
+        _context = context ?? throw new ArgumentNullException(nameof(context));
     }
 
     public void AddEnemyToEpisode(Enemy enemy, Episode episode)

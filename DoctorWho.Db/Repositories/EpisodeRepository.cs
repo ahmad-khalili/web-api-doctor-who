@@ -9,9 +9,9 @@ public class EpisodeRepository
 {
     private readonly DoctorWhoCoreDbContext _context;
 
-    public EpisodeRepository()
+    public EpisodeRepository(DoctorWhoCoreDbContext context)
     {
-        _context = new DoctorWhoCoreDbContext();
+        _context = context ?? throw new ArgumentNullException(nameof(context));
     }
     
     public void AddEpisode(Episode episode)
@@ -85,9 +85,8 @@ public class EpisodeRepository
     
     public void SummariseEpisodes()
     {
-        using var context = new DoctorWhoCoreDbContext();
-        context.Database.OpenConnection();
-        var cmd = context.Database.GetDbConnection().CreateCommand();
+        _context.Database.OpenConnection();
+        var cmd = _context.Database.GetDbConnection().CreateCommand();
         cmd.CommandText = "dbo.spSummariseEpisodes";
         var reader = cmd.ExecuteReader();
         var companions = new List<EpisodeSummaryCompanion>();
@@ -113,7 +112,7 @@ public class EpisodeRepository
             });
         }
         reader.Close();
-        context.Database.CloseConnection();
+        _context.Database.CloseConnection();
 
         Console.WriteLine("-------\nCompanion Summary\n-------");
         foreach (var companion in companions)
@@ -132,8 +131,7 @@ public class EpisodeRepository
     
     public void ListAllEpisodes()
     {
-        using var context = new DoctorWhoCoreDbContext();
-        var episodesWithInfo = context.EpisodesWithInfo
+        var episodesWithInfo = _context.EpisodesWithInfo
             .FromSqlRaw("SELECT * FROM dbo.viewEpisodes").ToList();
         foreach (var episode in episodesWithInfo)
         {

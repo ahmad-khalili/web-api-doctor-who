@@ -8,9 +8,9 @@ public class DoctorRepository : IDoctorRepository
 {
     private readonly DoctorWhoCoreDbContext _context;
 
-    public DoctorRepository()
+    public DoctorRepository(DoctorWhoCoreDbContext context)
     {
-        _context = new DoctorWhoCoreDbContext();
+        _context = context ?? throw new ArgumentNullException(nameof(context));
     }
     
     public void AddDoctor(Doctor doctor)

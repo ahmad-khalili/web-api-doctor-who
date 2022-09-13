@@ -6,9 +6,9 @@ public class EpisodeCompanionRepository
 {
     private readonly DoctorWhoCoreDbContext _context;
 
-    public EpisodeCompanionRepository()
+    public EpisodeCompanionRepository(DoctorWhoCoreDbContext context)
     {
-        _context = new DoctorWhoCoreDbContext();
+        _context = context ?? throw new ArgumentNullException(nameof(context));
     }
 
     public void AddCompanionToEpisode(Companion companion, Episode episode)

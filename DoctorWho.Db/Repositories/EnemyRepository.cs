@@ -6,9 +6,9 @@ public class EnemyRepository
 {
     private readonly DoctorWhoCoreDbContext _context;
 
-    public EnemyRepository()
+    public EnemyRepository(DoctorWhoCoreDbContext context)
     {
-        _context = new DoctorWhoCoreDbContext();
+        _context = context ?? throw new ArgumentNullException(nameof(context));
     }
 
     public Enemy GetEnemyById(int enemyId)
@@ -50,8 +50,7 @@ public class EnemyRepository
     
     public string? GetEnemiesForEpisode(int episodeId)
     {
-        using var context = new DoctorWhoCoreDbContext();
-        var companions = context.Episodes.Select(e => context.GetEnemies(episodeId)).FirstOrDefault();
+        var companions = _context.Episodes.Select(e => _context.GetEnemies(episodeId)).FirstOrDefault();
         return companions;
     }
 }
