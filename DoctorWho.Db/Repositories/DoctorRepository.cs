@@ -1,4 +1,6 @@
 ﻿using DoctorWho.Db.Entities;
+using DoctorWho.Db.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace DoctorWho.Db.Repositories;
 
@@ -60,5 +62,20 @@ public class DoctorRepository
     public ICollection<Doctor> GetAll()
     {
         return _context.Doctors.ToList();
+    }
+
+    public async Task<(IEnumerable<Doctor>, PaginationMetadata)> GetDoctorsAsync(int pageNumber, int pageSize)
+    {
+        var collection = _context.Doctors as IQueryable<Doctor>;
+
+        var totalItemCount = await collection.CountAsync();
+
+        var paginationMetadata = new PaginationMetadata(totalItemCount, pageSize, pageNumber);
+
+        var collectionToReturn = await collection.OrderBy(d => d.DoctorName)
+            .Skip(pageSize * (pageNumber - 1)).Take(pageSize).ToListAsync();
+
+        return (collectionToReturn, paginationMetadata);
+
     }
 }
