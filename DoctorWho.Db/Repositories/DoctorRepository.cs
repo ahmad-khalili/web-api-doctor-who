@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DoctorWho.Db.Repositories;
 
-public class DoctorRepository
+public class DoctorRepository : IDoctorRepository
 {
     private readonly DoctorWhoCoreDbContext _context;
 
