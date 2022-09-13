@@ -6,16 +6,18 @@ namespace DoctorWho.Db;
 
 public class DoctorWhoCoreDbContext : DbContext
 {
-    public DbSet<Author> Authors { get; set; }
-    public DbSet<Enemy> Enemies { get; set; }
-    public DbSet<Companion> Companions { get; set; }
-    public DbSet<Doctor> Doctors { get; set; }
-    public DbSet<Episode> Episodes { get; set; }
-    public DbSet<EpisodeEnemy> EpisodeEnemies { get; set; }
-    public DbSet<EpisodeCompanion> EpisodeCompanions { get; set; }
-    public DbSet<EpisodeWithInfo> EpisodesWithInfo { get; set; }
-    public DbSet<EpisodeSummaryCompanion> EpisodeSummariesCompanions { get; set; }
-    public DbSet<EpisodeSummaryEnemy> EpisodeSummariesEnemies { get; set; }
+    public DoctorWhoCoreDbContext(DbContextOptions<DoctorWhoCoreDbContext> options) : base(options) {}
+
+    public DbSet<Author> Authors { get; set; } = null!;
+    public DbSet<Enemy> Enemies { get; set; } = null!;
+    public DbSet<Companion> Companions { get; set; } = null!;
+    public DbSet<Doctor> Doctors { get; set; } = null!;
+    public DbSet<Episode> Episodes { get; set; } = null!;
+    public DbSet<EpisodeEnemy> EpisodeEnemies { get; set; } = null!;
+    public DbSet<EpisodeCompanion> EpisodeCompanions { get; set; } = null!;
+    public DbSet<EpisodeWithInfo> EpisodesWithInfo { get; set; } = null!;
+    public DbSet<EpisodeSummaryCompanion> EpisodeSummariesCompanions { get; set; } = null!;
+    public DbSet<EpisodeSummaryEnemy> EpisodeSummariesEnemies { get; set; } = null!;
 
     public string GetCompanions(int episodeId) => throw new NotSupportedException();
     public string GetEnemies(int episodeId) => throw new NotSupportedException();
