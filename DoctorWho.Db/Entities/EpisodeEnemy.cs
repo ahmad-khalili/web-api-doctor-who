@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DoctorWho.Db.Models;
+namespace DoctorWho.Db.Entities;
 [Table(nameof(EpisodeEnemy))]
 public class EpisodeEnemy
 {

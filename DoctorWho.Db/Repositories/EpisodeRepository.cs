@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using DoctorWho.Db.Entities;
 using DoctorWho.Db.Models;
 using Microsoft.EntityFrameworkCore;
 

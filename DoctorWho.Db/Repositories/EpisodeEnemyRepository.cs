@@ -1,4 +1,4 @@
-﻿using DoctorWho.Db.Models;
+﻿using DoctorWho.Db.Entities;
 
 namespace DoctorWho.Db.Repositories;
 public class EpisodeEnemyRepository
