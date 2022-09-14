@@ -9,5 +9,6 @@ public class EpisodeProfile : Profile
     public EpisodeProfile()
     {
         CreateMap<Episode, EpisodeDto>();
+        CreateMap<EpisodeForCreationDto, Episode>();
     }
 }
