@@ -48,15 +48,9 @@ public class DoctorRepository : IDoctorRepository
         _context.SaveChanges();
     }
 
-    public void DeleteDoctor(int doctorId)
+    public void DeleteDoctor(Doctor doctor)
     {
-        var doctorToDelete = _context.Doctors.FirstOrDefault(d => d.DoctorId.Equals(doctorId));
-
-        if (doctorToDelete == default)
-            throw new Exception($"Doctor with id {doctorId} not found!");
-        
-        _context.Doctors.Remove(doctorToDelete);
-        _context.SaveChanges();
+        _context.Doctors.Remove(doctor);
     }
 
     public ICollection<Doctor> GetAll()
@@ -110,5 +104,10 @@ public class DoctorRepository : IDoctorRepository
         var doctorId = await GetDoctorId(doctor);
 
         return doctorId;
+    }
+
+    public async Task<bool> SaveChangesAsync()
+    {
+        return await _context.SaveChangesAsync() >= 0;
     }
 }
