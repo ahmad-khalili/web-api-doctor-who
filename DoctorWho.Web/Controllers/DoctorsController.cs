@@ -70,6 +70,20 @@ namespace DoctorWho.Web.Controllers
                 createdDoctor.LastEpisodeDate
             });
         }
-        
+
+        [HttpDelete("{doctorId}")]
+        public async Task<ActionResult> DeleteDoctor(int doctorId)
+        {
+            var doctor = await _doctorRepository.GetDoctorAsync(doctorId);
+
+            if (doctor == default)
+                return NotFound();
+            
+            _doctorRepository.DeleteDoctor(doctor);
+
+            await _doctorRepository.SaveChangesAsync();
+
+            return NoContent();
+        }
     }
 }
