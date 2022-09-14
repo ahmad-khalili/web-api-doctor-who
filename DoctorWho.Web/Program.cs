@@ -1,5 +1,9 @@
 using DoctorWho.Db;
+using DoctorWho.Db.Entities;
 using DoctorWho.Db.Repositories;
+using DoctorWho.Web.Validators;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +23,8 @@ builder.Services.AddDbContext<DoctorWhoCoreDbContext>(options =>
 builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+builder.Services.AddScoped<IValidator<Doctor>, DoctorValidator>();
 
 var app = builder.Build();
 
