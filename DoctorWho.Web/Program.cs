@@ -22,6 +22,8 @@ builder.Services.AddDbContext<DoctorWhoCoreDbContext>(options =>
 
 builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
 
+builder.Services.AddScoped<IEpisodeRepository, EpisodeRepository>();
+
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddScoped<IValidator<Doctor>, DoctorValidator>();
