@@ -76,6 +76,39 @@ public class DoctorRepository : IDoctorRepository
             .Skip(pageSize * (pageNumber - 1)).Take(pageSize).ToListAsync();
 
         return (collectionToReturn, paginationMetadata);
+    }
 
+    public async Task<Doctor?> GetDoctorAsync(int doctorId)
+    {
+        return await _context.Doctors.FirstOrDefaultAsync(d => d.DoctorId.Equals(doctorId));
+    }
+
+    private async Task<int> GetDoctorId(Doctor doctor)
+    {
+        var queriedDoctor = await _context.Doctors
+            .FirstOrDefaultAsync(d => d.DoctorNumber.Equals(doctor.DoctorNumber));
+        
+        if (queriedDoctor == default)
+            throw new Exception("Doctor not found!");
+
+        return queriedDoctor.DoctorId;
+    }
+
+    public async Task<int> UpsertDoctor(Doctor doctor)
+    {
+        await _context.Doctors.Upsert(doctor)
+            .On(d => d.DoctorNumber)
+            .WhenMatched(d => new Doctor
+                {
+                    DoctorName = doctor.DoctorName,
+                    DoctorNumber = doctor.DoctorNumber,
+                    BirthDate = doctor.BirthDate,
+                    FirstEpisodeDate = doctor.FirstEpisodeDate,
+                    LastEpisodeDate = doctor.LastEpisodeDate,
+                }).RunAsync();
+        
+        var doctorId = await GetDoctorId(doctor);
+
+        return doctorId;
     }
 }
