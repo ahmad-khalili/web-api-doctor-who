@@ -28,6 +28,8 @@ builder.Services.AddScoped<IEnemyRepository, EnemyRepository>();
 
 builder.Services.AddScoped<ICompanionRepository, CompanionRepository>();
 
+builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
+
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddScoped<IValidator<Doctor>, DoctorValidator>();

@@ -1,8 +1,9 @@
 ﻿using DoctorWho.Db.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace DoctorWho.Db.Repositories;
 
-public class AuthorRepository
+public class AuthorRepository : IAuthorRepository
 {
     private readonly DoctorWhoCoreDbContext _context;
 
@@ -32,5 +33,15 @@ public class AuthorRepository
         
         _context.Authors.Remove(authorToDelete);
         _context.SaveChanges();
+    }
+
+    public async Task<Author?> GetAuthorAsync(int authorId)
+    {
+        return await _context.Authors.FirstOrDefaultAsync(a => a.AuthorId.Equals(authorId));
+    }
+
+    public async Task<bool> SaveChangesAsync()
+    {
+        return await _context.SaveChangesAsync() >= 0;
     }
 }
