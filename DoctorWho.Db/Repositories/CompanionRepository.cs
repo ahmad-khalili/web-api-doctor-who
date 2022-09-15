@@ -1,8 +1,9 @@
 ﻿using DoctorWho.Db.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace DoctorWho.Db.Repositories;
 
-public class CompanionRepository
+public class CompanionRepository : ICompanionRepository
 {
     private readonly DoctorWhoCoreDbContext _context;
 
@@ -52,5 +53,29 @@ public class CompanionRepository
     {
         var companions = _context.Episodes.Select(e => _context.GetCompanions(episodeId)).FirstOrDefault();
         return companions;
+    }
+
+    public async Task<bool> EpisodeExistsAsync(int episodeId)
+    {
+        return await _context.Episodes.AnyAsync(e => e.EpisodeId.Equals(episodeId));
+    }
+
+    public async Task AddCompanionToEpisodeAsync(int episodeId, Companion companion)
+    {
+        var episode = await _context.Episodes
+            .FirstOrDefaultAsync(e => e.EpisodeId.Equals(episodeId));
+
+        var episodeCompanionToAdd = new EpisodeCompanion
+        {
+            Episode = episode!,
+            Companion = companion
+        };
+
+        await _context.EpisodeCompanions.AddAsync(episodeCompanionToAdd);
+    }
+
+    public async Task<bool> SaveChangesAsync()
+    {
+        return await _context.SaveChangesAsync() >= 0;
     }
 }
