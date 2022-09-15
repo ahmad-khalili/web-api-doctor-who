@@ -8,6 +8,7 @@ public class DoctorProfile : Profile
 {
     public DoctorProfile()
     {
-        CreateMap<Doctor, DoctorInfo>();
+        CreateMap<Doctor, DoctorDto>();
+        CreateMap<DoctorForUpsertionDto, Doctor>();
     }
 }

@@ -6,4 +6,6 @@ namespace DoctorWho.Db.Repositories;
 public interface IDoctorRepository
 {
     Task<(IEnumerable<Doctor>, PaginationMetadata)> GetDoctorsAsync(int pageNumber, int pageSize);
+    Task<Doctor?> GetDoctorAsync(int doctorId);
+    Task<int> UpsertDoctor(Doctor doctor);
 }
