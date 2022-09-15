@@ -28,6 +28,8 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddScoped<IValidator<Doctor>, DoctorValidator>();
 
+builder.Services.AddScoped<IValidator<Episode>, EpisodeValidator>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

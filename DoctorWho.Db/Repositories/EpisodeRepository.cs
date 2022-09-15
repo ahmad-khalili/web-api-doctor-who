@@ -156,4 +156,29 @@ public class EpisodeRepository : IEpisodeRepository
 
         return (collectionToReturn, paginationMetadata);
     }
+
+    public async Task<Episode?> GetEpisodeAsync(int episodeId)
+    {
+        return await _context.Episodes.FirstOrDefaultAsync(e => e.EpisodeId.Equals(episodeId));
+    }
+
+    public async Task<bool> DoctorExistsAsync(int doctorId)
+    {
+        return await _context.Doctors.AnyAsync(d => d.DoctorId.Equals(doctorId));
+    }
+
+    public async Task<bool> AuthorExistsAsync(int authorId)
+    {
+        return await _context.Authors.AnyAsync(a => a.AuthorId.Equals(authorId));
+    }
+    
+    public async Task AddEpisodeAsync(Episode episode)
+    {
+        await _context.Episodes.AddAsync(episode);
+    }
+
+    public async Task<bool> SaveChangesAsync()
+    {
+        return await _context.SaveChangesAsync() >= 0;
+    }
 }
