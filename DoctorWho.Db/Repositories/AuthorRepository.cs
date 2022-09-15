@@ -1,4 +1,4 @@
-﻿using DoctorWho.Db.Models;
+﻿using DoctorWho.Db.Entities;
 
 namespace DoctorWho.Db.Repositories;
 
@@ -6,9 +6,9 @@ public class AuthorRepository
 {
     private readonly DoctorWhoCoreDbContext _context;
 
-    public AuthorRepository()
+    public AuthorRepository(DoctorWhoCoreDbContext context)
     {
-        _context = new DoctorWhoCoreDbContext();
+        _context = context ?? throw new ArgumentNullException(nameof(context));
     }
     
     public void AddAuthor(Author author)

@@ -1,4 +1,4 @@
-﻿using DoctorWho.Db.Models;
+﻿using DoctorWho.Db.Entities;
 
 namespace DoctorWho.Db.Repositories;
 
@@ -6,9 +6,9 @@ public class CompanionRepository
 {
     private readonly DoctorWhoCoreDbContext _context;
 
-    public CompanionRepository()
+    public CompanionRepository(DoctorWhoCoreDbContext context)
     {
-        _context = new DoctorWhoCoreDbContext();
+        _context = context ?? throw new ArgumentNullException(nameof(context));
     }
     
     public Companion GetCompanionById(int companionId)
@@ -50,8 +50,7 @@ public class CompanionRepository
     
     public string? PrintCompanionsForEpisode(int episodeId)
     {
-        using var context = new DoctorWhoCoreDbContext();
-        var companions = context.Episodes.Select(e => context.GetCompanions(episodeId)).FirstOrDefault();
+        var companions = _context.Episodes.Select(e => _context.GetCompanions(episodeId)).FirstOrDefault();
         return companions;
     }
 }

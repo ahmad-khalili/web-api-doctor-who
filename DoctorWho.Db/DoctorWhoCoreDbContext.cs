@@ -1,29 +1,26 @@
-﻿using DoctorWho.Db.Models;
+﻿using DoctorWho.Db.Entities;
+using DoctorWho.Db.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DoctorWho.Db;
 
 public class DoctorWhoCoreDbContext : DbContext
 {
-    public DbSet<Author> Authors { get; set; }
-    public DbSet<Enemy> Enemies { get; set; }
-    public DbSet<Companion> Companions { get; set; }
-    public DbSet<Doctor> Doctors { get; set; }
-    public DbSet<Episode> Episodes { get; set; }
-    public DbSet<EpisodeEnemy> EpisodeEnemies { get; set; }
-    public DbSet<EpisodeCompanion> EpisodeCompanions { get; set; }
-    public DbSet<EpisodeWithInfo> EpisodesWithInfo { get; set; }
-    public DbSet<EpisodeSummaryCompanion> EpisodeSummariesCompanions { get; set; }
-    public DbSet<EpisodeSummaryEnemy> EpisodeSummariesEnemies { get; set; }
+    public DoctorWhoCoreDbContext(DbContextOptions<DoctorWhoCoreDbContext> options) : base(options) {}
+
+    public DbSet<Author> Authors { get; set; } = null!;
+    public DbSet<Enemy> Enemies { get; set; } = null!;
+    public DbSet<Companion> Companions { get; set; } = null!;
+    public DbSet<Doctor> Doctors { get; set; } = null!;
+    public DbSet<Episode> Episodes { get; set; } = null!;
+    public DbSet<EpisodeEnemy> EpisodeEnemies { get; set; } = null!;
+    public DbSet<EpisodeCompanion> EpisodeCompanions { get; set; } = null!;
+    public DbSet<EpisodeWithInfo> EpisodesWithInfo { get; set; } = null!;
+    public DbSet<EpisodeSummaryCompanion> EpisodeSummariesCompanions { get; set; } = null!;
+    public DbSet<EpisodeSummaryEnemy> EpisodeSummariesEnemies { get; set; } = null!;
 
     public string GetCompanions(int episodeId) => throw new NotSupportedException();
     public string GetEnemies(int episodeId) => throw new NotSupportedException();
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        var connectionString = "Server=DESKTOP-CBIDIQC;Initial Catalog = DoctorWhoCore;Trusted_Connection=True";
-        optionsBuilder.UseSqlServer(connectionString);
-    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -114,11 +111,11 @@ public class DoctorWhoCoreDbContext : DbContext
         );
 
         modelBuilder.HasDbFunction(typeof(DoctorWhoCoreDbContext)
-                .GetMethod(nameof(GetCompanions), new[] { typeof(int) }))
+                .GetMethod(nameof(GetCompanions), new[] { typeof(int) })!)
             .HasName("fnCompanions");
         
         modelBuilder.HasDbFunction(typeof(DoctorWhoCoreDbContext)
-                .GetMethod(nameof(GetEnemies), new[] { typeof(int) }))
+                .GetMethod(nameof(GetEnemies), new[] { typeof(int) })!)
             .HasName("fnEnemies");
     }
 }
