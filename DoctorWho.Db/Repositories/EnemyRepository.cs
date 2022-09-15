@@ -1,8 +1,9 @@
 ﻿using DoctorWho.Db.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace DoctorWho.Db.Repositories;
 
-public class EnemyRepository
+public class EnemyRepository : IEnemyRepository
 {
     private readonly DoctorWhoCoreDbContext _context;
 
@@ -52,5 +53,32 @@ public class EnemyRepository
     {
         var companions = _context.Episodes.Select(e => _context.GetEnemies(episodeId)).FirstOrDefault();
         return companions;
+    }
+
+    private async Task<Episode?> GetEpisodeAsync(int episodeId)
+    {
+        return await _context.Episodes.FirstOrDefaultAsync(e => e.EpisodeId.Equals(episodeId));
+    }
+
+    public async Task<bool> EpisodeExistsAsync(int episodeId)
+    {
+        return await _context.Episodes.AnyAsync(e => e.EpisodeId.Equals(episodeId));
+    }
+
+    public async Task AddEnemyToEpisodeAsync(int episodeId, Enemy enemy)
+    {
+        var episode = await GetEpisodeAsync(episodeId);
+
+        var episodeEnemyToAdd = new EpisodeEnemy
+        {
+            Episode = episode!,
+            Enemy = enemy
+        };
+        episode!.EpisodeEnemies.Add(episodeEnemyToAdd);
+    }
+
+    public async Task<bool> SaveChangesAsync()
+    {
+        return await _context.SaveChangesAsync() >= 0;
     }
 }
