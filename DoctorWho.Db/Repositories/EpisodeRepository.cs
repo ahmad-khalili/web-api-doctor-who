@@ -1,11 +1,12 @@
 ﻿using System.Data;
 using DoctorWho.Db.Entities;
 using DoctorWho.Db.Models;
+using DoctorWho.Db.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace DoctorWho.Db.Repositories;
 
-public class EpisodeRepository
+public class EpisodeRepository : IEpisodeRepository
 {
     private readonly DoctorWhoCoreDbContext _context;
 
@@ -139,5 +140,20 @@ public class EpisodeRepository
                               $"{episode.Companions}\n" 
                               + $"{episode.DoctorName}\n-----------");
         }
+    }
+
+    public async Task<(IEnumerable<Episode>, PaginationMetadata)> GetEpisodesAsync(int pageNumber, int pageSize)
+    {
+        var collection = _context.Episodes as IQueryable<Episode>;
+
+        var totalItemCount = await collection.CountAsync();
+
+        var paginationMetadata = new PaginationMetadata(totalItemCount, pageSize, pageNumber);
+
+        var collectionToReturn = await collection.OrderBy(e => e.SeriesNumber)
+            .ThenBy(e => e.EpisodeNumber)
+            .Skip(pageSize * (pageNumber - 1)).Take(pageSize).ToListAsync();
+
+        return (collectionToReturn, paginationMetadata);
     }
 }
