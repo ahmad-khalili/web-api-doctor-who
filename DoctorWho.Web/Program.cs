@@ -26,6 +26,8 @@ builder.Services.AddScoped<IEpisodeRepository, EpisodeRepository>();
 
 builder.Services.AddScoped<IEnemyRepository, EnemyRepository>();
 
+builder.Services.AddScoped<ICompanionRepository, CompanionRepository>();
+
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddScoped<IValidator<Doctor>, DoctorValidator>();
